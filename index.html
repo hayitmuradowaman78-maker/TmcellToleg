@@ -1,204 +1,271 @@
 <!DOCTYPE html>
-<html lang="tk">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tiz Töleg</title>
+<title>TizTole</title>
 
 <style>
-:root{
---main:#00a651;
---dark:#0b1f16;
---card:#ffffff;
---text:#111;
-}
-
 body{
 margin:0;
 font-family:Segoe UI,Arial;
-background:linear-gradient(135deg,#022e1c,#01140c);
-color:white;
+background:#eef2f6;
 }
 
-.header{
-background:rgba(0,0,0,.4);
-padding:18px;
+.screen{display:none;min-height:100vh;}
+.active{display:block;}
+
+/* LOGIN */
+.login{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.pin{
+display:flex;
+gap:10px;
+margin-top:20px;
+}
+
+.pin input{
+width:50px;
+height:50px;
 text-align:center;
-font-size:26px;
-font-weight:700;
-backdrop-filter:blur(10px);
+font-size:22px;
+border-radius:12px;
+border:1px solid #ccc;
 }
 
-.container{
-max-width:420px;
-margin:25px auto;
-padding:15px;
+/* HEADER */
+.header{
+padding:20px;
+font-size:24px;
+font-weight:700;
+}
+
+/* GRID */
+.grid{
+padding:20px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
 }
 
 .card{
-background:var(--card);
-color:var(--text);
-padding:25px;
-border-radius:25px;
-box-shadow:0 20px 40px rgba(0,0,0,.4);
-animation:fade .7s ease;
-}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(20px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-.title{
-font-size:24px;
-font-weight:700;
-text-align:center;
-margin-bottom:15px;
-color:var(--main);
-}
-
-.label{
+height:90px;
+border-radius:20px;
+background:linear-gradient(135deg,#4facfe,#00f2fe);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
 font-weight:600;
-margin-top:15px;
-display:block;
+font-size:20px;
+box-shadow:0 10px 20px rgba(0,0,0,.2);
 }
+
+/* FORM */
+.form{padding:20px;}
 
 .input{
 width:100%;
-padding:16px;
-margin-top:6px;
-border-radius:14px;
-border:2px solid #e5e5e5;
+padding:15px;
+margin-top:10px;
+border-radius:12px;
+border:1px solid #ccc;
 font-size:18px;
-transition:.2s;
-}
-
-.input:focus{
-border-color:var(--main);
-outline:none;
-box-shadow:0 0 0 3px rgba(0,166,81,.15);
 }
 
 .paybtn{
 width:100%;
-padding:18px;
+padding:16px;
 margin-top:20px;
 border:none;
-border-radius:18px;
-background:linear-gradient(135deg,#00c853,#009624);
+border-radius:15px;
+background:#00a651;
 color:white;
 font-size:20px;
 font-weight:700;
-cursor:pointer;
-transition:.2s;
 }
 
-.paybtn:hover{
-transform:scale(1.02);
-}
-
-.result{
-margin-top:15px;
+/* LOADER */
+.loader{
 text-align:center;
+padding-top:150px;
+font-size:22px;
+}
+
+/* SUCCESS */
+.success{
+text-align:center;
+padding-top:120px;
+font-size:24px;
 font-weight:700;
+color:#00a651;
 }
 
-.history{
-margin-top:20px;
-}
-
+/* HISTORY */
+.hist{padding:20px;}
 .hitem{
-background:#f3f3f3;
+background:white;
 padding:12px;
 border-radius:12px;
-margin-top:8px;
-font-size:14px;
+margin-top:10px;
+}
+
+/* NAV */
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:12px;
+box-shadow:0 -5px 15px rgba(0,0,0,.1);
+}
+.nav button{
+background:none;
+border:none;
+font-size:22px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-⚡ Tiz Töleg
+<!-- LOGIN -->
+<div id="login" class="screen active">
+<div class="login">
+<h2>TizTole</h2>
+<p>Введите PIN</p>
+
+<div class="pin">
+<input maxlength="1">
+<input maxlength="1">
+<input maxlength="1">
+<input maxlength="1">
 </div>
 
-<div class="container">
-
-<div class="card">
-
-<div class="title">TMCell Töleg</div>
-
-<label class="label">Telefon belgisi</label>
-<input class="input" id="phone" placeholder="65XXXXXX">
-
-<label class="label">Mukdar (TMT)</label>
-<input class="input" id="amount" type="number" placeholder="10">
-
-<button class="paybtn" onclick="pay()">Töleg et</button>
-
-<div class="result" id="result"></div>
-
-<div class="history" id="history"></div>
-
+<button class="paybtn" onclick="enterApp()">Войти</button>
 </div>
+</div>
+
+<!-- HOME -->
+<div id="home" class="screen">
+<div class="header">TizTole</div>
+
+<div style="padding:0 20px">
+<h2>Добро пожаловать</h2>
+</div>
+
+<div class="grid">
+<div class="card" onclick="openPay('TMCell')">TM CELL</div>
+<div class="card" onclick="openPay('Internet')">Internet</div>
+<div class="card" onclick="openPay('WiFi')">WiFi</div>
+<div class="card" onclick="openPay('AŞTU')">AŞTU</div>
+</div>
+</div>
+
+<!-- PAYMENT -->
+<div id="pay" class="screen">
+<div class="header" id="serviceName">Service</div>
+
+<div class="form">
+<input class="input" id="phone" placeholder="Телефон">
+<input class="input" id="amount" placeholder="Сумма">
+<button class="paybtn" onclick="processPay()">Оплатить</button>
+</div>
+</div>
+
+<!-- LOADING -->
+<div id="loading" class="screen">
+<div class="loader">
+⏳ Обработка платежа...
+</div>
+</div>
+
+<!-- SUCCESS -->
+<div id="success" class="screen">
+<div class="success">
+✅ Оплата выполнена
+<br><br>
+<button class="paybtn" onclick="goHome()">На главную</button>
+</div>
+</div>
+
+<!-- HISTORY -->
+<div id="history" class="screen">
+<div class="header">История</div>
+<div class="hist" id="histList"></div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+<button onclick="goHome()">🏠</button>
+<button onclick="showHistory()">🕒</button>
+<button onclick="alert('Profile demo')">👤</button>
 </div>
 
 <script>
 
-function validatePhone(p){
-return /^[6][0-9]{7}$/.test(p);
+function show(id){
+document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
 }
 
-function pay(){
-let phone=document.getElementById("phone").value.trim();
-let amount=document.getElementById("amount").value.trim();
+function enterApp(){
+show("home");
+}
 
-if(!phone || !amount){
-show("Maglumatlary doldur!");
+function openPay(name){
+serviceName.innerText=name;
+show("pay");
+}
+
+function processPay(){
+let p=phone.value;
+let a=amount.value;
+
+if(!p || !a){
+alert("Введите данные");
 return;
 }
 
-if(!validatePhone(phone)){
-show("Telefon format nädogry!");
-return;
-}
+show("loading");
 
-let text="✅ "+phone+" → "+amount+" TMT töleg edildi";
-show(text);
-
-saveHistory(text);
-loadHistory();
-}
-
-function show(t){
-document.getElementById("result").innerText=t;
+setTimeout(()=>{
+saveHistory(p+" → "+a);
+show("success");
+},1500);
 }
 
 function saveHistory(t){
-let arr=JSON.parse(localStorage.getItem("tm_hist")||"[]");
-arr.unshift({
-text:t,
-date:new Date().toLocaleString()
-});
-localStorage.setItem("tm_hist",JSON.stringify(arr));
+let arr=JSON.parse(localStorage.getItem("hist")||"[]");
+arr.unshift(t);
+localStorage.setItem("hist",JSON.stringify(arr));
+}
+
+function showHistory(){
+show("history");
+loadHistory();
 }
 
 function loadHistory(){
-let arr=JSON.parse(localStorage.getItem("tm_hist")||"[]");
-let box=document.getElementById("history");
-box.innerHTML="<b>Töleg taryhy:</b>";
-
-arr.slice(0,8).forEach(x=>{
-box.innerHTML+=`
-<div class="hitem">
-${x.text}<br>
-<small>${x.date}</small>
-</div>`;
+let arr=JSON.parse(localStorage.getItem("hist")||"[]");
+histList.innerHTML="";
+arr.forEach(x=>{
+histList.innerHTML+=`<div class="hitem">${x}</div>`;
 });
 }
 
-loadHistory();
+function goHome(){
+show("home");
+}
 
 </script>
 
