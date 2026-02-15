@@ -3,184 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Altyn Asyr Pro | Premium</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/umd/lucide.min.js"></script>
+    <title>Altyn Asyr Pro | Aman Hayitmuradov</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #00873c;
             --dark-green: #005a28;
             --gold: #ffc107;
-            --bg: #f8fafc;
+            --bg: #f3f4f6;
             --card-bg: #ffffff;
-            --text: #1e293b;
-            --card-gradient: linear-gradient(135deg, #00873c 0%, #006b30 100%);
+            --text: #111827;
+            --card-gradient: linear-gradient(135deg, #00873c 0%, #005a28 100%);
         }
 
-        .dark-mode {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text: #f1f5f9;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 40px; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
-
-        body { background: var(--bg); color: var(--text); min-height: 100vh; transition: 0.3s; padding-bottom: 50px; }
-
-        /* Lang Bar */
+        /* Ýokarky Diller we Baýdaklar */
         .top-nav {
             background: var(--dark-green);
-            padding: 15px;
+            padding: 12px;
             display: flex;
             justify-content: center;
             gap: 10px;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .lang-btn {
-            background: rgba(255,255,255,0.15);
-            border: none;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white; padding: 8px 12px; border-radius: 10px;
+            cursor: pointer; font-size: 14px; font-weight: 600;
+            display: flex; align-items: center; gap: 6px;
         }
-        .lang-btn.active { background: var(--gold); color: #000; }
+        .lang-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
 
-        /* Premium Card */
+        /* Bank Kartasy */
         .card-container { padding: 20px; }
         .bank-card {
             background: var(--card-gradient);
-            padding: 25px;
-            border-radius: 24px;
-            color: white;
-            box-shadow: 0 12px 24px rgba(0, 135, 60, 0.25);
+            padding: 30px 25px; border-radius: 25px; color: white;
+            box-shadow: 0 15px 30px rgba(0, 135, 60, 0.3);
             position: relative;
-            overflow: hidden;
         }
-        .card-chip {
-            width: 45px; height: 35px; 
-            background: linear-gradient(135deg, #f3d075 0%, #bd912d 100%);
-            border-radius: 6px; margin-bottom: 20px;
+        .user-name { font-size: 22px; font-weight: 800; margin-bottom: 20px; letter-spacing: 1.5px; text-transform: uppercase; }
+        .iban-box {
+            background: rgba(0,0,0,0.25); padding: 15px; border-radius: 12px;
+            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .user-name { font-size: 20px; font-weight: 700; letter-spacing: 1px; margin-bottom: 15px; text-transform: uppercase; }
-        .iban-container {
-            background: rgba(0,0,0,0.2);
-            padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .iban-text { font-family: 'Monaco', monospace; font-size: 15px; }
+        .iban-text { font-family: 'Courier New', monospace; font-size: 15px; font-weight: bold; }
 
-        /* Menu Section */
-        .menu-title { padding: 0 25px; font-size: 18px; font-weight: 700; margin-bottom: 15px; }
+        /* Hyzmatlar Menýusy */
         .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            padding: 0 20px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 0 20px 20px;
         }
         .menu-item {
-            background: var(--card-bg);
-            padding: 25px 15px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            border: 1px solid rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: 0.2s;
+            background: white; padding: 18px 5px; border-radius: 18px;
+            text-align: center; border: 1px solid #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
-        .menu-item:active { transform: scale(0.95); background: var(--bg); }
-        .icon-box {
-            width: 50px; height: 50px;
-            background: rgba(0, 135, 60, 0.1);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            color: var(--primary);
-        }
-        .menu-item span { font-size: 14px; font-weight: 600; display: block; }
+        .menu-item i { color: var(--primary); font-size: 24px; margin-bottom: 10px; display: block; }
+        .menu-item span { font-size: 12px; font-weight: 700; color: #374151; }
 
-        /* Toast Message */
+        /* Töleg Meýdançasy */
+        .payment-form {
+            background: white; margin: 0 20px 20px; padding: 25px;
+            border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .form-label { display: block; margin-bottom: 10px; font-weight: 700; color: #4b5563; font-size: 14px; }
+        
+        .input-box {
+            position: relative; display: flex; align-items: center; margin-bottom: 20px;
+        }
+        .prefix { position: absolute; left: 15px; font-weight: 800; color: var(--primary); font-size: 16px; }
+        input {
+            width: 100%; padding: 15px; border-radius: 15px;
+            border: 2px solid #f3f4f6; font-size: 17px; font-weight: 700; outline: none; background: #f9fafb;
+        }
+        input:focus { border-color: var(--primary); background: #fff; }
+        .tel-padding { padding-left: 65px; }
+
+        /* Dekont Düwmesi */
+        .dekont-btn {
+            width: 100%; background: #25d366; color: white; border: none;
+            padding: 20px; border-radius: 18px; font-size: 18px; font-weight: 800;
+            cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3); transition: 0.2s;
+        }
+        .dekont-btn:active { transform: scale(0.97); }
+        .dekont-btn small { font-size: 11px; opacity: 0.9; font-weight: 400; }
+
         #toast {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: #333; color: white; padding: 12px 25px; border-radius: 30px;
-            font-size: 14px; display: none; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #1f2937; color: white; padding: 12px 25px; border-radius: 50px;
+            display: none; z-index: 2000; font-weight: 600;
         }
     </style>
 </head>
 <body>
 
-<div id="toast">Gökjürildi! ✅</div>
+<div id="toast">Göçürildi! ✅</div>
 
 <div class="top-nav">
-    <button class="lang-btn active" onclick="setLang('tk', this)">TM</button>
-    <button class="lang-btn" onclick="setLang('tr', this)">TR</button>
-    <button class="lang-btn" onclick="setLang('en', this)">EN</button>
-    <button class="lang-btn" onclick="setLang('ru', this)">RU</button>
-    <button style="background:none; border:none; color:white; margin-left:10px;" onclick="toggleTheme()">
-        <i data-lucide="moon" id="t-icon" size="20"></i>
-    </button>
+    <button class="lang-btn active" onclick="setLang('tk', this)">🇹🇲 TM</button>
+    <button class="lang-btn" onclick="setLang('tr', this)">🇹🇷 TR</button>
+    <button class="lang-btn" onclick="setLang('en', this)">🇺🇸 EN</button>
+    <button class="lang-btn" onclick="setLang('ru', this)">🇷🇺 RU</button>
 </div>
 
 <div class="card-container">
     <div class="bank-card">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div class="card-chip"></div>
-            <i data-lucide="wifi" style="transform: rotate(90deg); opacity: 0.7;"></i>
-        </div>
         <div class="user-name" onclick="copyText('AMAN HAYITMURADOV')">AMAN HAYITMURADOV</div>
-        <div class="iban-container" onclick="copyText('TR910015700000000201151163')">
+        <div class="iban-box" onclick="copyText('TR910015700000000201151163')">
             <span class="iban-text">TR91 0015 ... 1163</span>
-            <i data-lucide="copy" size="16"></i>
+            <i class="fas fa-copy"></i>
         </div>
     </div>
 </div>
 
-<h2 class="menu-title" id="menu-head">Hyzmatlar</h2>
-
 <div class="menu-grid">
-    <div class="menu-item" onclick="alert('Altyn Asyr')">
-        <div class="icon-box"><i data-lucide="smartphone"></i></div>
-        <span class="lang" data-tk="Altyn Asyr" data-tr="Altyn Asyr" data-en="Altyn Asyr" data-ru="Алтын Асыр">Altyn Asyr</span>
+    <div class="menu-item"><i class="fas fa-mobile-alt"></i><span>Altyn Asyr</span></div>
+    <div class="menu-item"><i class="fas fa-wifi"></i><span>Wi-Fi</span></div>
+    <div class="menu-item"><i class="fas fa-tv"></i><span>Älem TV</span></div>
+    <div class="menu-item"><i class="fas fa-play-circle"></i><span>Belet Film</span></div>
+    <div class="menu-item"><i class="fas fa-phone-alt"></i><span>Öý Tel</span></div>
+    <div class="menu-item" onclick="location.reload()"><i class="fas fa-redo"></i><span>Täzele</span></div>
+</div>
+
+<div class="payment-form">
+    <label class="form-label" id="lbl-phone">Telefon belgiňiz</label>
+    <div class="input-box">
+        <span class="prefix">+993</span>
+        <input type="tel" class="tel-padding" id="phone" placeholder="61 000000" maxlength="8">
     </div>
 
-    <div class="menu-item" onclick="alert('Wi-Fi')">
-        <div class="icon-box"><i data-lucide="wifi"></i></div>
-        <span class="lang" data-tk="Wi-Fi Töleg" data-tr="Wi-Fi Ödeme" data-en="Wi-Fi Payment" data-ru="Wi-Fi Оплата">Wi-Fi Töleg</span>
+    <label class="form-label" id="lbl-amount">Möçberi (TMT)</label>
+    <div class="input-box">
+        <input type="number" id="amount" placeholder="0.00">
     </div>
 
-    <div class="menu-item" onclick="alert('Alem TV')">
-        <div class="icon-box"><i data-lucide="tv-2"></i></div>
-        <span class="lang" data-tk="Älem TV" data-tr="Alem TV" data-en="Alem TV" data-ru="Алем ТВ">Älem TV</span>
-    </div>
-
-    <div class="menu-item" onclick="alert('Belet Film')">
-        <div class="icon-box"><i data-lucide="play-circle"></i></div>
-        <span class="lang" data-tk="Belet Film" data-tr="Belet Film" data-en="Belet Film" data-ru="Белет Фильм">Belet Film</span>
-    </div>
-
-    <div class="menu-item" onclick="alert('Öý Telefony')">
-        <div class="icon-box"><i data-lucide="phone-call"></i></div>
-        <span class="lang" data-tk="Öý Telefony" data-tr="Ev Telefonu" data-en="Home Phone" data-ru="Дом. телефон">Öý Telefony</span>
-    </div>
-
-    <div class="menu-item" onclick="toggleTheme()">
-        <div class="icon-box"><i data-lucide="settings"></i></div>
-        <span class="lang" data-tk="Sazlamalar" data-tr="Ayarlar" data-en="Settings" data-ru="Настройки">Sazlamalar</span>
-    </div>
+    <button class="dekont-btn" onclick="sendToWhatsApp()">
+        <span id="btn-main">DEKONDYŇYZY UGRADYŇ</span>
+        <small id="btn-sub">WhatsApp arkaly tassyklama</small>
+    </button>
 </div>
 
 <script>
-    lucide.createIcons();
-
+    // Göçürmek funksiýasy
     function copyText(text) {
         navigator.clipboard.writeText(text).then(() => {
             const toast = document.getElementById('toast');
@@ -189,30 +160,40 @@
         });
     }
 
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        const icon = document.getElementById('t-icon');
-        const isDark = document.body.classList.contains('dark-mode');
-        icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
-        lucide.createIcons();
+    // WhatsApp-a maglumat ibermek
+    function sendToWhatsApp() {
+        const phone = document.getElementById('phone').value;
+        const amount = document.getElementById('amount').value;
+        const myWhatsApp = "99364041065";
+
+        if(!phone || !amount) {
+            alert("Siz maglumatlary doly girizmediňiz!");
+            return;
+        }
+
+        const msg = `Salam Aman Hayitmuradov, men töleg etdim.%0A%0ANomer: +993${phone}%0AMöçberi: ${amount} TMT%0A%0ADekondy aşakda ugradýaryn.`;
+        window.open(`https://wa.me/${myWhatsApp}?text=${msg}`, '_blank');
     }
 
-    const translations = {
-        tk: { head: "Hyzmatlar", copy: "Gökjürildi! ✅" },
-        tr: { head: "Hizmetler", copy: "Kopyalandı! ✅" },
-        en: { head: "Services", copy: "Copied! ✅" },
-        ru: { head: "Услуги", copy: "Скопировано! ✅" }
+    // Terjime obýekti
+    const langData = {
+        tk: { phone: "Telefon belgiňiz", amount: "Möçberi (TMT)", main: "DEKONDYŇYZY UGRADYŇ", sub: "WhatsApp arkaly tassyklama", copy: "Göçürildi! ✅" },
+        tr: { phone: "Telefon Numaranız", amount: "Miktar (TMT)", main: "DEKONTUNUZU GÖNDERİN", sub: "WhatsApp ile onayla", copy: "Kopyalandı! ✅" },
+        en: { phone: "Phone Number", amount: "Amount (TMT)", main: "SEND YOUR RECEIPT", sub: "Confirm via WhatsApp", copy: "Copied! ✅" },
+        ru: { phone: "Номер телефона", amount: "Сумма (TMT)", main: "ОТПРАВИТЬ ЧЕК", sub: "Подтвердить через WhatsApp", copy: "Скопировано! ✅" }
     };
 
     function setLang(lang, btn) {
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        document.getElementById('menu-head').innerText = translations[lang].head;
-        document.getElementById('toast').innerText = translations[lang].copy;
-        document.querySelectorAll('.lang').forEach(el => {
-            el.innerText = el.getAttribute(`data-${lang}`);
-        });
+        
+        document.getElementById('lbl-phone').innerText = langData[lang].phone;
+        document.getElementById('lbl-amount').innerText = langData[lang].amount;
+        document.getElementById('btn-main').innerText = langData[lang].main;
+        document.getElementById('btn-sub').innerText = langData[lang].sub;
+        document.getElementById('toast').innerText = langData[lang].copy;
     }
 </script>
+
 </body>
 </html>
