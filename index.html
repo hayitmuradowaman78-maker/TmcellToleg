@@ -3,170 +3,207 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tmcell Töleg</title>
+<title>Töleg App</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
 body{
 margin:0;
-font-family:Arial;
-background:#0f172a;
+font-family:Poppins;
+background:#0b1220;
 color:white;
 }
 
 .header{
-background:linear-gradient(45deg,#ff003c,#ff4d6d);
-padding:20px;
+background:#111827;
+padding:18px;
 text-align:center;
-font-size:24px;
-font-weight:bold;
+font-size:22px;
+font-weight:600;
+box-shadow:0 5px 20px rgba(0,0,0,0.4);
 }
 
 .card{
-background:#1e293b;
-margin:15px;
-padding:15px;
-border-radius:15px;
+margin:20px;
+background:linear-gradient(135deg,#1f2937,#020617);
+padding:20px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
 text-align:center;
 }
 
 .iban{
-font-size:18px;
-font-weight:bold;
+font-size:20px;
+font-weight:600;
 cursor:pointer;
 }
 
 .name{
+margin-top:10px;
 opacity:0.8;
-margin-top:5px;
+cursor:pointer;
 }
 
 .menu{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:15px;
-padding:15px;
+gap:18px;
+padding:20px;
 }
 
 .menu button{
-background:#1e293b;
+background:#111827;
 border:none;
+border-radius:18px;
+padding:18px;
 color:white;
-padding:20px;
-border-radius:15px;
-font-size:16px;
+font-size:15px;
 cursor:pointer;
+box-shadow:0 5px 20px rgba(0,0,0,0.5);
 }
 
-.menu button:hover{
-background:#334155;
-}
-
-.paybtn{
-background:#ff003c;
-border:none;
-padding:15px;
-width:90%;
-margin:20px auto;
+.menu img{
+width:40px;
 display:block;
-border-radius:15px;
-font-size:18px;
-color:white;
-cursor:pointer;
+margin:auto;
+margin-bottom:10px;
 }
 
-.lang{
-position:absolute;
-right:10px;
-top:10px;
-background:white;
-color:black;
-border:none;
-padding:5px 10px;
-border-radius:10px;
-cursor:pointer;
-}
-
-.offline{
+.page{
 display:none;
-background:red;
-text-align:center;
-padding:10px;
+padding:20px;
+}
+
+input{
+width:100%;
+padding:15px;
+margin-top:15px;
+border-radius:12px;
+border:none;
+background:#111827;
+color:white;
+font-size:16px;
+}
+
+.sendbtn{
+margin-top:20px;
+width:100%;
+padding:15px;
+border:none;
+border-radius:15px;
+background:#2563eb;
+color:white;
+font-size:17px;
+cursor:pointer;
+}
+
+.back{
+margin-top:15px;
+background:#374151;
 }
 </style>
 </head>
 
 <body>
 
-<div class="offline" id="offlineText">
-Internet ýok
-</div>
-
-<button class="lang" onclick="changeLang()">TR</button>
-
 <div class="header">
-📱 TMCELL TÖLEG
+TMCELL TÖLEG
 </div>
 
 <div class="card">
-<div class="iban" onclick="copyIBAN()">
+<div class="iban" onclick="copyText('TR91 0015 7000 0000 0201 1511 63')">
 TR91 0015 7000 0000 0201 1511 63
 </div>
-<div class="name">
+
+<div class="name" onclick="copyText('AMAN HAYITMURADOV')">
 AMAN HAYITMURADOV
 </div>
 </div>
 
-<div class="menu">
-<button>📶 Tmcell</button>
-<button>📡 WiFi</button>
-<button>📺 Alem TV</button>
-<button>🎬 Belet Film</button>
-<button>☎ Öý Telefon</button>
-</div>
+<div class="menu" id="home">
 
-<button class="paybtn" onclick="payNow()">
-Töleg Et
+<button onclick="openPage('tmcell')">
+<img src="https://img.icons8.com/fluency/96/sim-card.png">
+Tmcell
 </button>
 
+<button>
+<img src="https://img.icons8.com/fluency/96/wifi.png">
+WiFi
+</button>
+
+<button>
+<img src="https://img.icons8.com/fluency/96/tv.png">
+Alem TV
+</button>
+
+<button>
+<img src="https://img.icons8.com/fluency/96/movie.png">
+Belet Film
+</button>
+
+<button>
+<img src="https://img.icons8.com/fluency/96/phone.png">
+Öý Telefon
+</button>
+
+</div>
+
+<!-- TMCELL PAGE -->
+<div class="page" id="tmcell">
+
+<h2>Tmcell Töleg</h2>
+
+<input id="nameInput" placeholder="Müşderi Ady Familyasy">
+
+<input id="phoneInput" placeholder="Telefon Nomer">
+
+<input id="amountInput" placeholder="Nace Manat">
+
+<input id="dekontInput" placeholder="Dekont Kody">
+
+<button class="sendbtn" onclick="sendWhatsApp()">Dekont Kody Iber</button>
+
+<button class="sendbtn back" onclick="goHome()">Yza</button>
+
+</div>
+
 <script>
-let lang="tk";
 
-function changeLang(){
-if(lang==="tk"){
-lang="tr";
-document.querySelector(".paybtn").innerText="Ödeme Yap";
-document.getElementById("offlineText").innerText="İnternet yok";
-}else{
-lang="tk";
-document.querySelector(".paybtn").innerText="Töleg Et";
-document.getElementById("offlineText").innerText="Internet ýok";
-}
+function copyText(text){
+navigator.clipboard.writeText(text);
+alert("Kopyalandy");
 }
 
-function copyIBAN(){
-navigator.clipboard.writeText("TR91 0015 7000 0000 0201 1511 63");
-alert("IBAN kopyalandy");
+function openPage(page){
+document.getElementById("home").style.display="none";
+document.getElementById(page).style.display="block";
 }
 
-function payNow(){
-let code="DK"+Math.floor(Math.random()*1000000);
+function goHome(){
+document.getElementById("home").style.display="grid";
+document.getElementById("tmcell").style.display="none";
+}
 
-let text="Töleg edildi. Dekont kod: "+code;
+function sendWhatsApp(){
+
+let name=document.getElementById("nameInput").value;
+let phone=document.getElementById("phoneInput").value;
+let amount=document.getElementById("amountInput").value;
+let dekont=document.getElementById("dekontInput").value;
+
+let text=
+"Müşderi: "+name+
+"\nNomer: "+phone+
+"\nSumma: "+amount+" manat"+
+"\nDekont: "+dekont;
 
 let url="https://wa.me/99364041065?text="+encodeURIComponent(text);
 
 window.open(url,"_blank");
 }
 
-function checkInternet(){
-if(!navigator.onLine){
-document.getElementById("offlineText").style.display="block";
-}else{
-document.getElementById("offlineText").style.display="none";
-}
-}
-
-setInterval(checkInternet,1000);
 </script>
 
 </body>
