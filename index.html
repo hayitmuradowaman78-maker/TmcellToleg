@@ -1,226 +1,108 @@
 <!DOCTYPE html>
 <html lang="tk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TMCELL TÖLEG</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiz Töle ⚡</title>
+    <style>
+        :root { 
+            --bg-gradient: linear-gradient(135deg, #138808 0%, #1a5e12 100%); 
+            --card: rgba(255, 255, 255, 0.98); 
+            --text: #000000; 
+            --asyr-blue: #002752; 
+            --main-gold: #ffc107; 
+            --accent: #28a745; 
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .night-mode { 
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card: #1e293b; 
+            --text: #ffffff; 
+            --asyr-blue: #38bdf8;
+        }
+        
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-gradient); background-attachment: fixed; color: var(--text); margin: 0; min-height: 100vh; transition: 0.3s; overflow-x: hidden; }
+        .container { max-width: 420px; margin: auto; padding: 15px; }
+        
+        .header-bar { background: rgba(0, 39, 82, 0.95); color: white; padding: 22px; text-align: center; font-weight: 900; font-size: 28px; border-radius: 0 0 25px 25px; box-shadow: var(--shadow); }
+        .time-box { display: flex; justify-content: space-between; background: rgba(0, 0, 0, 0.85); color: var(--main-gold); padding: 12px 18px; border-radius: 15px; margin: 15px 0; font-weight: 900; border: 1px solid var(--main-gold); }
+        
+        .lang-bar { display: flex; gap: 4px; justify-content: flex-end; }
+        .lang-btn { cursor: pointer; border: 2px solid #ddd; padding: 8px; border-radius: 10px; background: var(--card); font-size: 11px; font-weight: 900; color: #000; }
+        .active-lang { background: var(--asyr-blue); color: white !important; }
+        
+        .profile-card { background: var(--card); padding: 25px; border-radius: 25px; text-align: center; margin-bottom: 20px; box-shadow: var(--shadow); border: 3px solid var(--asyr-blue); color: var(--text); }
+        
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        .menu-item { background: var(--card); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.1); color: var(--text); }
+        .menu-item b { font-size: 18px; font-weight: 900; display: block; margin-top: 10px; }
 
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:#0f172a;
-color:white;
-}
-
-.header{
-padding:20px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
-background:#020617;
-}
-
-.topcard{
-margin:15px;
-padding:20px;
-border-radius:15px;
-background:linear-gradient(45deg,#0ea5e9,#2563eb);
-text-align:center;
-cursor:pointer;
-}
-
-.name{
-font-size:26px;
-font-weight:900;
-}
-
-.iban{
-font-size:18px;
-margin-top:8px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-padding:15px;
-}
-
-.menu{
-background:#020617;
-padding:25px;
-border-radius:15px;
-text-align:center;
-cursor:pointer;
-font-size:18px;
-}
-
-.form{
-display:none;
-padding:20px;
-}
-
-select,input{
-width:100%;
-padding:15px;
-margin-bottom:15px;
-border-radius:12px;
-border:none;
-font-size:16px;
-}
-
-.btn{
-background:#2563eb;
-padding:15px;
-border:none;
-width:100%;
-border-radius:12px;
-color:white;
-font-size:18px;
-cursor:pointer;
-}
-
-.toast{
-position:fixed;
-bottom:30px;
-left:50%;
-transform:translateX(-50%);
-background:#2563eb;
-padding:15px 25px;
-border-radius:12px;
-opacity:0;
-transition:.4s;
-}
-
-.toast.show{
-opacity:1;
-bottom:60px;
-}
-</style>
+        .action-btn { border:none; background:var(--card); border-radius:12px; width:42px; height:42px; cursor:pointer; font-size:20px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow); border: 1px solid var(--asyr-blue); }
+    </style>
 </head>
+<body onload="startApp()">
 
-<body>
+    <div class="header-bar" id="main-title">Tiz töle ⚡</div>
 
-<div class="header">TMCELL TÖLEG</div>
+    <div class="container">
+        <div class="time-box">
+            <span id="date-now">--.--.----</span>
+            <span id="time-now">00:00:00</span>
+        </div>
 
-<!-- IBAN CARD -->
-<div class="topcard" onclick="copyInfo()">
-<div class="name" id="name">AMAN HAYITMURADOV</div>
-<div class="iban" id="iban">TR91 0015 7000 0000 0201 1511 63</div>
-</div>
+        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 15px;">
+            <button class="action-btn" onclick="toggleNightMode()">🌗</button>
+            <button class="action-btn" onclick="alert('Taryh ýok')">🕒</button>
+            <div class="lang-bar" style="flex-grow:1;">
+                <button class="lang-btn active-lang" onclick="applyLang('tk')">TM</button>
+                <button class="lang-btn" onclick="applyLang('ru')">RU</button>
+            </div>
+        </div>
 
-<!-- MENU -->
-<div class="grid" id="menu">
-<div class="menu" onclick="openService('wifi')">Wi-Fi</div>
-<div class="menu" onclick="openService('tmcell')">TMCell</div>
-<div class="menu" onclick="openService('alem')">Älem TV</div>
-<div class="menu" onclick="openService('belet')">Belet Film</div>
-<div class="menu" onclick="openService('home')">Öý Telefon</div>
-</div>
+        <div class="profile-card">
+            <h2 id="welcome-text">Hoş geldiňiz!</h2>
+            <p>Hasabyňyzy çalt we ygtybarly dolduryň.</p>
+        </div>
 
-<!-- FORM -->
-<div class="form" id="formArea">
+        <div class="menu-grid">
+            <div class="menu-item" onclick="alert('Altyn Asyr saýlandy')">
+                <span>📱</span>
+                <b>Altyn Asyr</b>
+            </div>
+            <div class="menu-item" onclick="alert('Internet saýlandy')">
+                <span>🌐</span>
+                <b>Internet</b>
+            </div>
+        </div>
+    </div>
 
-<select id="welayat" onchange="loadEtrap()">
-<option value="">Welaýat saýla</option>
-<option value="ahal">Ahal</option>
-<option value="balkan">Balkan</option>
-<option value="dashoguz">Daşoguz</option>
-<option value="lebap">Lebap</option>
-<option value="mary">Mary</option>
-</select>
+    <script>
+        function startApp() {
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
 
-<select id="etrap">
-<option>Etrap saýla</option>
-</select>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('date-now').innerText = now.toLocaleDateString();
+            document.getElementById('time-now').innerText = now.toLocaleTimeString();
+        }
 
-<input placeholder="Kod" id="kod">
-<input placeholder="Näçe manat" id="manat">
+        function toggleNightMode() {
+            document.body.classList.toggle('night-mode');
+        }
 
-<button class="btn" onclick="sendWhats()">Dekont iber</button>
-
-<button class="btn" onclick="goHome()" style="margin-top:10px;background:#334155">
-Yza gaýt
-</button>
-
-</div>
-
-<div class="toast" id="toast">Kopyalandy</div>
-
-<script>
-
-/* IBAN COPY (ÜÝTGEDILMEDI) */
-function copyInfo(){
-let text=
-document.getElementById("name").innerText+"\n"+
-document.getElementById("iban").innerText;
-
-navigator.clipboard.writeText(text);
-showToast();
-}
-
-function showToast(){
-let t=document.getElementById("toast");
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),2000);
-}
-
-/* SERVICE OPEN */
-let activeService="wifi";
-
-function openService(s){
-activeService=s;
-document.getElementById("menu").style.display="none";
-document.getElementById("formArea").style.display="block";
-}
-
-/* BACK HOME */
-function goHome(){
-document.getElementById("menu").style.display="grid";
-document.getElementById("formArea").style.display="none";
-}
-
-/* ETRAP DATA */
-const data={
-ahal:["Änew 322","Gökdepe 323","Kaka 324"],
-balkan:["Türkmenbaşy 422","Balkanabat 423"],
-dashoguz:["Daşoguz 522","Görogly 523"],
-lebap:["Türkmenabat 441","Halaç 442","Saýat 443"],
-mary:["Mary 622","Baýramaly 623"]
-};
-
-function loadEtrap(){
-let w=document.getElementById("welayat").value;
-let e=document.getElementById("etrap");
-
-e.innerHTML="<option>Etrap saýla</option>";
-
-if(data[w]){
-data[w].forEach(x=>{
-let opt=new Option(x,x.split(" ")[1]);
-e.add(opt);
-});
-}
-}
-
-/* WHATSAPP SEND */
-function sendWhats(){
-let kod=document.getElementById("kod").value;
-let manat=document.getElementById("manat").value;
-
-let msg=
-"Hyzmat: "+activeService+"\n"+
-"Ady: AMAN HAYITMURADOV\n"+
-"Kod: "+kod+"\n"+
-"Manat: "+manat;
-
-window.open(
-"https://wa.me/99364041065?text="+encodeURIComponent(msg)
-);
-}
-
-</script>
-
+        function applyLang(lang) {
+            const welcome = document.getElementById('welcome-text');
+            if(lang === 'tk') {
+                welcome.innerText = "Hoş geldiňiz!";
+            } else {
+                welcome.innerText = "Добро пожаловать!";
+            }
+            // Beýleki düwmeleriň işjeňligini üýtgetmek
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active-lang'));
+            event.target.classList.add('active-lang');
+        }
+    </script>
 </body>
 </html>
