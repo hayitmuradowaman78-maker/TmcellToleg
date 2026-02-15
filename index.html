@@ -3,81 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Altyn Asyr Pro | Aman Hayitmuradov</title>
+    <title>Altyn Asyr Pro | Premium</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/umd/lucide.min.js"></script>
     <style>
         :root {
             --primary: #00873c;
             --dark-green: #005a28;
             --gold: #ffc107;
-            --bg: #f0f2f5;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
-            --text: #1c1e21;
+            --text: #1e293b;
+            --card-gradient: linear-gradient(135deg, #00873c 0%, #006b30 100%);
         }
 
         .dark-mode {
-            --bg: #0b0f19;
-            --card-bg: #161b22;
-            --text: #e6edf3;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f1f5f9;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; transition: 0.3s; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
 
-        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; }
-
-        .app-container { width: 100%; max-width: 450px; position: relative; padding-bottom: 100px; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; transition: 0.3s; padding-bottom: 50px; }
 
         /* Lang Bar */
-        .lang-selector {
-            display: flex; justify-content: center; gap: 10px; padding: 15px; background: var(--dark-green);
+        .top-nav {
+            background: var(--dark-green);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .lang-btn {
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            color: white; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
         }
-        .lang-btn.active { background: var(--gold); color: black; border-color: var(--gold); }
+        .lang-btn.active { background: var(--gold); color: #000; }
 
-        /* Card Design */
-        .premium-card {
-            background: linear-gradient(135deg, #00873c 0%, #004d22 100%);
-            margin: 20px; padding: 25px; border-radius: 24px; color: white;
-            box-shadow: 0 15px 35px rgba(0,77,34,0.3);
-            position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
+        /* Premium Card */
+        .card-container { padding: 20px; }
+        .bank-card {
+            background: var(--card-gradient);
+            padding: 25px;
+            border-radius: 24px;
+            color: white;
+            box-shadow: 0 12px 24px rgba(0, 135, 60, 0.25);
+            position: relative;
+            overflow: hidden;
         }
-
-        .premium-card::before {
-            content: ""; position: absolute; top: -50%; right: -20%; width: 250px; height: 250px;
-            background: rgba(255,255,255,0.05); border-radius: 50%;
+        .card-chip {
+            width: 45px; height: 35px; 
+            background: linear-gradient(135deg, #f3d075 0%, #bd912d 100%);
+            border-radius: 6px; margin-bottom: 20px;
         }
-
-        .card-label { font-size: 12px; text-transform: uppercase; opacity: 0.8; letter-spacing: 1.5px; }
-        .user-name { font-size: 22px; font-weight: 800; margin: 10px 0 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        
-        .iban-box {
-            background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px;
-            cursor: pointer; position: relative; border: 1px dashed rgba(255,255,255,0.3);
+        .user-name { font-size: 20px; font-weight: 700; letter-spacing: 1px; margin-bottom: 15px; text-transform: uppercase; }
+        .iban-container {
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .iban-box:active { background: rgba(255,255,255,0.1); }
-        .iban-num { font-family: 'Courier New', monospace; font-size: 17px; font-weight: bold; letter-spacing: 1px; }
+        .iban-text { font-family: 'Monaco', monospace; font-size: 15px; }
 
-        /* Copy Toast */
+        /* Menu Section */
+        .menu-title { padding: 0 25px; font-size: 18px; font-weight: 700; margin-bottom: 15px; }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 0 20px;
+        }
+        .menu-item {
+            background: var(--card-bg);
+            padding: 25px 15px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .menu-item:active { transform: scale(0.95); background: var(--bg); }
+        .icon-box {
+            width: 50px; height: 50px;
+            background: rgba(0, 135, 60, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: var(--primary);
+        }
+        .menu-item span { font-size: 14px; font-weight: 600; display: block; }
+
+        /* Toast Message */
         #toast {
-            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
-            background: #333; color: white; padding: 10px 20px; border-radius: 20px;
-            font-size: 14px; display: none; z-index: 1000;
-        }
-
-        /* Services */
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; }
-        .item { 
-            background: var(--card-bg); padding: 20px; border-radius: 20px; text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); cursor: pointer;
-        }
-        .item i { color: var(--primary); margin-bottom: 10px; }
-        .item b { display: block; font-size: 14px; }
-
-        .theme-toggle {
-            position: absolute; top: 75px; right: 30px; color: white; cursor: pointer;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: #333; color: white; padding: 12px 25px; border-radius: 30px;
+            font-size: 14px; display: none; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -85,58 +120,67 @@
 
 <div id="toast">Gökjürildi! ✅</div>
 
-<div class="app-container">
-    <div class="lang-selector">
-        <div class="lang-btn active" onclick="setLang('tk', this)">🇹🇲 TM</div>
-        <div class="lang-btn" onclick="setLang('tr', this)">🇹🇷 TR</div>
-        <div class="lang-btn" onclick="setLang('en', this)">🇺🇸 EN</div>
-        <div class="lang-btn" onclick="setLang('ru', this)">🇷🇺 RU</div>
-    </div>
+<div class="top-nav">
+    <button class="lang-btn active" onclick="setLang('tk', this)">TM</button>
+    <button class="lang-btn" onclick="setLang('tr', this)">TR</button>
+    <button class="lang-btn" onclick="setLang('en', this)">EN</button>
+    <button class="lang-btn" onclick="setLang('ru', this)">RU</button>
+    <button style="background:none; border:none; color:white; margin-left:10px;" onclick="toggleTheme()">
+        <i data-lucide="moon" id="t-icon" size="20"></i>
+    </button>
+</div>
 
-    <header style="background: var(--dark-green); padding: 20px; text-align: center; color: white;">
-        <h2 id="app-title">Altyn Asyr</h2>
-        <div class="theme-toggle" onclick="toggleTheme()"><i data-lucide="moon" id="t-icon"></i></div>
-    </header>
-
-    <div class="premium-card">
-        <p class="card-label" id="lbl-owner">Hasap Eýesi</p>
+<div class="card-container">
+    <div class="bank-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="card-chip"></div>
+            <i data-lucide="wifi" style="transform: rotate(90deg); opacity: 0.7;"></i>
+        </div>
         <div class="user-name" onclick="copyText('AMAN HAYITMURADOV')">AMAN HAYITMURADOV</div>
-        
-        <p class="card-label" id="lbl-iban">IBAN Hasaby</p>
-        <div class="iban-box" onclick="copyText('TR91 0015 7000 0000 0201 1511 63')">
-            <div class="iban-num">TR91 0015 7000 0000 0201 1511 63</div>
-            <i data-lucide="copy" size="14" style="position:absolute; right:10px; top:18px; opacity:0.6;"></i>
-        </div>
-        <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/MasterCard_logo.svg" height="25" style="margin-right: 10px; opacity: 0.8;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Visa_Logo.png" height="15" style="margin-top: 5px; opacity: 0.8;">
+        <div class="iban-container" onclick="copyText('TR910015700000000201151163')">
+            <span class="iban-text">TR91 0015 ... 1163</span>
+            <i data-lucide="copy" size="16"></i>
         </div>
     </div>
+</div>
 
-    <div class="grid">
-        <div class="item">
-            <i data-lucide="smartphone"></i>
-            <b class="lang" data-tk="Ykjam Aragatnaşyk" data-tr="Mobil İletişim" data-en="Mobile Network" data-ru="Мобильная связь">Ykjam Aragatnaşyk</b>
-        </div>
-        <div class="item">
-            <i data-lucide="globe"></i>
-            <b class="lang" data-tk="Internet" data-tr="İnternet" data-en="Internet" data-ru="Интернет">Internet</b>
-        </div>
-        <div class="item">
-            <i data-lucide="tv"></i>
-            <b class="lang" data-tk="IP-TV" data-tr="IP-TV" data-en="IP-TV" data-ru="IP-ТВ">IP-TV</b>
-        </div>
-        <div class="item">
-            <i data-lucide="wallet"></i>
-            <b class="lang" data-tk="Kartym" data-tr="Kartım" data-en="My Card" data-ru="Моя карта">Kartym</b>
-        </div>
+<h2 class="menu-title" id="menu-head">Hyzmatlar</h2>
+
+<div class="menu-grid">
+    <div class="menu-item" onclick="alert('Altyn Asyr')">
+        <div class="icon-box"><i data-lucide="smartphone"></i></div>
+        <span class="lang" data-tk="Altyn Asyr" data-tr="Altyn Asyr" data-en="Altyn Asyr" data-ru="Алтын Асыр">Altyn Asyr</span>
+    </div>
+
+    <div class="menu-item" onclick="alert('Wi-Fi')">
+        <div class="icon-box"><i data-lucide="wifi"></i></div>
+        <span class="lang" data-tk="Wi-Fi Töleg" data-tr="Wi-Fi Ödeme" data-en="Wi-Fi Payment" data-ru="Wi-Fi Оплата">Wi-Fi Töleg</span>
+    </div>
+
+    <div class="menu-item" onclick="alert('Alem TV')">
+        <div class="icon-box"><i data-lucide="tv-2"></i></div>
+        <span class="lang" data-tk="Älem TV" data-tr="Alem TV" data-en="Alem TV" data-ru="Алем ТВ">Älem TV</span>
+    </div>
+
+    <div class="menu-item" onclick="alert('Belet Film')">
+        <div class="icon-box"><i data-lucide="play-circle"></i></div>
+        <span class="lang" data-tk="Belet Film" data-tr="Belet Film" data-en="Belet Film" data-ru="Белет Фильм">Belet Film</span>
+    </div>
+
+    <div class="menu-item" onclick="alert('Öý Telefony')">
+        <div class="icon-box"><i data-lucide="phone-call"></i></div>
+        <span class="lang" data-tk="Öý Telefony" data-tr="Ev Telefonu" data-en="Home Phone" data-ru="Дом. телефон">Öý Telefony</span>
+    </div>
+
+    <div class="menu-item" onclick="toggleTheme()">
+        <div class="icon-box"><i data-lucide="settings"></i></div>
+        <span class="lang" data-tk="Sazlamalar" data-tr="Ayarlar" data-en="Settings" data-ru="Настройки">Sazlamalar</span>
     </div>
 </div>
 
 <script>
     lucide.createIcons();
 
-    // Göçürmek funksiýasy
     function copyText(text) {
         navigator.clipboard.writeText(text).then(() => {
             const toast = document.getElementById('toast');
@@ -145,7 +189,6 @@
         });
     }
 
-    // Gije/Gündiz rejimi
     function toggleTheme() {
         document.body.classList.toggle('dark-mode');
         const icon = document.getElementById('t-icon');
@@ -154,30 +197,22 @@
         lucide.createIcons();
     }
 
-    // Terjime ulgamy
     const translations = {
-        tk: { owner: "Hasap Eýesi", iban: "IBAN Hasaby", copy: "Gökjürildi! ✅" },
-        tr: { owner: "Hesap Sahibi", iban: "IBAN Numarası", copy: "Kopyalandı! ✅" },
-        en: { owner: "Account Holder", iban: "IBAN Number", copy: "Copied! ✅" },
-        ru: { owner: "Владелец счета", iban: "IBAN номер", copy: "Скопировано! ✅" }
+        tk: { head: "Hyzmatlar", copy: "Gökjürildi! ✅" },
+        tr: { head: "Hizmetler", copy: "Kopyalandı! ✅" },
+        en: { head: "Services", copy: "Copied! ✅" },
+        ru: { head: "Услуги", copy: "Скопировано! ✅" }
     };
 
     function setLang(lang, btn) {
-        // Düwmeleriň reňkini üýtgetmek
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        // Kartadaky tekstler
-        document.getElementById('lbl-owner').innerText = translations[lang].owner;
-        document.getElementById('lbl-iban').innerText = translations[lang].iban;
+        document.getElementById('menu-head').innerText = translations[lang].head;
         document.getElementById('toast').innerText = translations[lang].copy;
-
-        // Menýu elementlerini terjime etmek
         document.querySelectorAll('.lang').forEach(el => {
             el.innerText = el.getAttribute(`data-${lang}`);
         });
     }
 </script>
-
 </body>
 </html>
