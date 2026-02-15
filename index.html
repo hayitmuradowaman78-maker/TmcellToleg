@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Altyn Asyr Pro | Multi-Service</title>
+    <title>Aman Pay ⚡ | Multi-Service</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -16,143 +16,150 @@
         }
 
         .dark-mode {
-            --bg: #111827;
-            --card-bg: #1f2937;
-            --text: #f9fafb;
+            --bg: #0b0f19;
+            --card-bg: #161b22;
+            --text: #f0f6fc;
             --primary: #10b981;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: 0.3s; }
-        body { background: var(--bg); color: var(--text); padding-bottom: 30px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; transition: background 0.4s, color 0.4s; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* Internet Barlagy */
-        #offline-msg {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); z-index: 9999; flex-direction: column; align-items: center; justify-content: center;
+        /* 4. SPLASH SCREEN (Giriş sahypasy) */
+        #splash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark-green); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 10000;
         }
+        .loader-logo { font-size: 40px; font-weight: 900; color: var(--gold); letter-spacing: 2px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* 1. ANIMASIÝALAR */
+        .fade-up { animation: fadeUp 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Header & Lang */
-        .header { background: var(--dark-green); padding: 10px; position: sticky; top: 0; z-index: 1000; }
+        .header { background: var(--dark-green); padding: 12px; position: sticky; top: 0; z-index: 1000; }
         .top-row { display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: auto; }
-        .lang-btns { display: flex; gap: 5px; }
-        .lang-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 5px 8px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        .lang-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; }
         .lang-btn.active { background: var(--gold); color: #000; }
 
         /* Card Section */
         .card-container { padding: 20px; max-width: 500px; margin: auto; }
         .bank-card {
             background: linear-gradient(135deg, var(--primary) 0%, var(--dark-green) 100%);
-            padding: 25px; border-radius: 20px; color: white; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            padding: 25px; border-radius: 25px; color: white; box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            position: relative; overflow: hidden;
         }
 
         /* Menu Grid */
-        .menu-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px; max-width: 500px; margin: auto;
-        }
+        .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 20px; max-width: 500px; margin: auto; }
         .menu-item {
-            background: var(--card-bg); padding: 20px 10px; border-radius: 15px;
-            text-align: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            background: var(--card-bg); padding: 20px 10px; border-radius: 20px;
+            text-align: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
         }
-        .menu-item i { font-size: 28px; color: var(--primary); margin-bottom: 10px; }
-        .menu-item span { display: block; font-size: 12px; font-weight: bold; }
+        .menu-item:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .menu-item i { font-size: 30px; color: var(--primary); margin-bottom: 10px; }
+        .menu-item span { display: block; font-size: 13px; font-weight: 700; }
 
-        /* Payment Form (Açylýan bölüm) */
+        /* 5. INPUT MASK & FORM */
         .payment-modal {
             display: none; background: var(--card-bg); margin: 0 20px 20px; padding: 25px;
-            border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 460px;
+            border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 460px;
         }
-        .form-label { display: block; margin-bottom: 8px; font-weight: bold; }
-        .input-box { position: relative; display: flex; align-items: center; margin-bottom: 15px; }
-        .prefix { position: absolute; left: 15px; font-weight: bold; color: var(--primary); }
+        .input-box { position: relative; margin-bottom: 20px; }
+        .prefix { position: absolute; left: 15px; top: 12px; font-weight: 800; color: var(--primary); }
         input {
-            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd;
-            font-size: 16px; font-weight: bold; outline: none; background: var(--bg); color: var(--text);
+            width: 100%; padding: 14px; border-radius: 12px; border: 2px solid #eef2f6;
+            font-size: 17px; font-weight: 700; outline: none; background: var(--bg); color: var(--text);
         }
-        input.tel { padding-left: 60px; }
+        input:focus { border-color: var(--primary); background: var(--card-bg); }
+        input.tel { padding-left: 65px; letter-spacing: 1px; }
 
+        /* 3. LOADING BUTTON */
         .send-btn {
-            width: 100%; background: #25d366; color: white; border: none; padding: 15px;
-            border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;
+            width: 100%; background: #25d366; color: white; border: none; padding: 18px;
+            border-radius: 15px; font-size: 18px; font-weight: 800; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
+        .spinner {
+            display: none; width: 20px; height: 20px; border: 3px solid #ffffff;
+            border-top: 3px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         #toast {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: #333; color: white; padding: 10px 20px; border-radius: 20px; display: none;
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #1f2937; color: white; padding: 12px 25px; border-radius: 50px; display: none; z-index: 10000;
         }
     </style>
 </head>
-<body onload="checkConnection()">
+<body onload="initApp()">
 
-<div id="offline-msg">
-    <i class="fas fa-wifi-slash" style="font-size: 50px; color: red; margin-bottom: 20px;"></i>
-    <h2>Internet ýok!</h2>
-    <p>Dowam etmek üçin internete birigiň.</p>
+<div id="splash">
+    <div class="loader-logo">AMAN PAY ⚡</div>
+    <p style="color: white; margin-top: 10px; opacity: 0.8; font-weight: 600;">Howpsuz we Çalt</p>
 </div>
-
-<div id="toast">Göçürildi! ✅</div>
 
 <header class="header">
     <div class="top-row">
         <div class="lang-btns">
             <button class="lang-btn active" onclick="setLang('tk', this)">🇹🇲</button>
             <button class="lang-btn" onclick="setLang('tr', this)">🇹🇷</button>
-            <button class="lang-btn" onclick="setLang('en', this)">🇺🇸</button>
             <button class="lang-btn" onclick="setLang('ru', this)">🇷🇺</button>
         </div>
-        <button onclick="toggleMode()" style="background:none; border:none; color:white; font-size: 20px; cursor:pointer;">
+        <button onclick="toggleMode()" style="background:none; border:none; color:white; font-size: 22px; cursor:pointer;">
             <i class="fas fa-moon" id="mode-icon"></i>
         </button>
     </div>
 </header>
 
-<div class="card-container">
+<div class="card-container fade-up">
     <div class="bank-card">
-        <h3 onclick="copyText('AMAN HAYITMURADOV')" style="cursor:pointer;">AMAN HAYITMURADOV</h3>
-        <p onclick="copyText('TR910015700000000201151163')" style="margin-top:10px; font-family:monospace; cursor:pointer; font-size:14px; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px;">
-            TR91 0015 ... 1163 <i class="fas fa-copy"></i>
-        </p>
+        <h2 onclick="copyText('AMAN HAYITMURADOV')" style="cursor:pointer; letter-spacing: 1px;">AMAN HAYITMURADOV</h2>
+        <div onclick="copyText('TR910015700000000201151163')" style="margin-top:20px; font-family:monospace; cursor:pointer; font-size:15px; background:rgba(0,0,0,0.25); padding:15px; border-radius:12px; display: flex; justify-content: space-between;">
+            <span>TR91 0015 ... 1163</span> <i class="fas fa-copy" style="opacity: 0.7;"></i>
+        </div>
     </div>
 </div>
 
-<div class="menu-grid">
+<div class="menu-grid fade-up">
     <div class="menu-item" onclick="showForm('Altyn Asyr', 'tel')"><i class="fas fa-mobile-alt"></i><span>Altyn Asyr</span></div>
     <div class="menu-item" onclick="showForm('Wi-Fi', 'id')"><i class="fas fa-wifi"></i><span>Wi-Fi</span></div>
     <div class="menu-item" onclick="showForm('Älem TV', 'id')"><i class="fas fa-tv"></i><span>Älem TV</span></div>
     <div class="menu-item" onclick="showForm('Belet Film', 'id')"><i class="fas fa-film"></i><span>Belet Film</span></div>
     <div class="menu-item" onclick="showForm('Öý Telefony', 'tel')"><i class="fas fa-phone-alt"></i><span>Öý Tel</span></div>
-    <div class="menu-item" onclick="location.reload()"><i class="fas fa-sync"></i><span>Täzele</span></div>
+    <div class="menu-item" onclick="location.reload()"><i class="fas fa-sync-alt"></i><span>Täzele</span></div>
 </div>
 
-<div class="payment-modal" id="payment-modal">
-    <h3 id="service-name" style="margin-bottom: 15px; color: var(--primary);">Hyzmat</h3>
+<div class="payment-modal fade-up" id="payment-modal">
+    <h3 id="service-name" style="margin-bottom: 20px; color: var(--primary); font-size: 20px; font-weight: 800;">Hyzmat</h3>
     
-    <label class="form-label" id="lbl-id">ID / Belgi</label>
-    <div class="input-box" id="input-container">
-        </div>
+    <label style="font-weight: 700; font-size: 14px; color: #6b7280; display: block; margin-bottom: 8px;" id="lbl-id">ID / Belgi</label>
+    <div class="input-box" id="input-container"></div>
 
-    <label class="form-label" id="lbl-amount">Möçberi (TMT)</label>
+    <label style="font-weight: 700; font-size: 14px; color: #6b7280; display: block; margin-bottom: 8px;" id="lbl-amount">Möçberi (TMT)</label>
     <div class="input-box">
         <input type="number" id="amount" placeholder="0.00">
     </div>
 
-    <button class="send-btn" onclick="sendToWhatsApp()">
+    <button class="send-btn" id="send-btn" onclick="processPayment()">
+        <div class="spinner" id="btn-spinner"></div>
         <span id="btn-text">DEKONDYŇYZY UGRADYŇ</span>
     </button>
 </div>
 
+<div id="toast">Göçürildi! ✅</div>
+
 <script>
-    let currentService = "";
-
-    function checkConnection() {
-        if (!navigator.onLine) {
-            document.getElementById('offline-msg').style.display = 'flex';
-        }
+    function initApp() {
+        setTimeout(() => {
+            const splash = document.getElementById('splash');
+            splash.style.opacity = '0';
+            setTimeout(() => splash.style.display = 'none', 600);
+        }, 2000);
     }
-
-    window.addEventListener('offline', checkConnection);
-    window.addEventListener('online', () => {
-        document.getElementById('offline-msg').style.display = 'none';
-    });
 
     function toggleMode() {
         document.body.classList.toggle('dark-mode');
@@ -161,27 +168,40 @@
     }
 
     function showForm(name, type) {
-        currentService = name;
-        document.getElementById('service-name').innerText = name;
+        const modal = document.getElementById('payment-modal');
         const container = document.getElementById('input-container');
-        document.getElementById('payment-modal').style.display = 'block';
-        window.scrollTo(0, document.body.scrollHeight);
+        modal.style.display = 'block';
+        document.getElementById('service-name').innerText = name;
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
         if (type === 'tel') {
-            container.innerHTML = `<span class="prefix">+993</span><input type="tel" id="user-id" class="tel" maxlength="8" placeholder="61 000000">`;
+            container.innerHTML = `<span class="prefix">+993</span><input type="tel" id="user-id" class="tel" maxlength="8" placeholder="6x xxxxxx">`;
         } else {
-            container.innerHTML = `<input type="text" id="user-id" placeholder="ID belgiňiz">`;
+            container.innerHTML = `<input type="text" id="user-id" placeholder="Müşderi ID belgiňiz">`;
         }
     }
 
-    function sendToWhatsApp() {
+    function processPayment() {
         const id = document.getElementById('user-id').value;
         const amount = document.getElementById('amount').value;
-        if (!id || !amount) return alert("Maglumatlary ýazyň!");
+        if (!id || !amount) return alert("Maglumatlary dolduryň!");
 
-        const prefix = document.getElementById('user-id').classList.contains('tel') ? "+993" : "ID: ";
-        const msg = `Salam Aman, men töleg etdim.%0A%0AHyzmat: ${currentService}%0A${prefix}${id}%0AMöçberi: ${amount} TMT%0ADekondy ugradýaryn.`;
-        window.open(`https://wa.me/99364041065?text=${msg}`);
+        // Loading effekti
+        const btnText = document.getElementById('btn-text');
+        const spinner = document.getElementById('btn-spinner');
+        btnText.innerText = "Ugradylýar...";
+        spinner.style.display = "block";
+
+        setTimeout(() => {
+            const service = document.getElementById('service-name').innerText;
+            const prefix = document.getElementById('user-id').classList.contains('tel') ? "+993" : "ID: ";
+            const msg = `Salam Aman Hayitmuradov, men töleg etdim.%0A%0AHyzmat: ${service}%0A${prefix}${id}%0AMöçberi: ${amount} TMT%0ADekondy ugradýaryn.`;
+            window.open(`https://wa.me/99364041065?text=${msg}`);
+            
+            // Yzyna gaýtarmak
+            btnText.innerText = "DEKONDYŇYZY UGRADYŇ";
+            spinner.style.display = "none";
+        }, 1500);
     }
 
     function copyText(text) {
@@ -194,7 +214,6 @@
     const langs = {
         tk: { id: "ID / Belgi", amount: "Möçberi (TMT)", btn: "DEKONDYŇYZY UGRADYŇ" },
         tr: { id: "ID / Numara", amount: "Miktar (TMT)", btn: "DEKONTU GÖNDER" },
-        en: { id: "ID / Number", amount: "Amount (TMT)", btn: "SEND RECEIPT" },
         ru: { id: "ID / Номер", amount: "Сумма (TMT)", btn: "ОТПРАВИТЬ ЧЕК" }
     };
 
