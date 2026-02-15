@@ -13,7 +13,6 @@ background:#0f172a;
 color:white;
 }
 
-/* HEADER */
 .header{
 padding:20px;
 text-align:center;
@@ -22,7 +21,6 @@ font-weight:bold;
 background:#020617;
 }
 
-/* TOP CARD */
 .topcard{
 margin:15px;
 padding:20px;
@@ -33,18 +31,15 @@ cursor:pointer;
 }
 
 .name{
-font-size:24px;
+font-size:26px;
 font-weight:900;
-letter-spacing:1px;
 }
 
 .iban{
 font-size:18px;
-opacity:0.9;
 margin-top:8px;
 }
 
-/* MENU GRID */
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
@@ -61,7 +56,6 @@ cursor:pointer;
 font-size:18px;
 }
 
-/* FORM */
 .form{
 display:none;
 padding:20px;
@@ -76,7 +70,6 @@ border:none;
 font-size:16px;
 }
 
-/* BUTTON */
 .btn{
 background:#2563eb;
 padding:15px;
@@ -88,7 +81,6 @@ font-size:18px;
 cursor:pointer;
 }
 
-/* TOAST */
 .toast{
 position:fixed;
 bottom:30px;
@@ -105,55 +97,14 @@ transition:.4s;
 opacity:1;
 bottom:60px;
 }
-
-/* INTERNET WARNING */
-.offline{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-color:white;
-align-items:center;
-justify-content:center;
-font-size:22px;
-z-index:999;
-}
-
-/* LANG + MODE */
-.topbuttons{
-display:flex;
-justify-content:space-between;
-padding:10px 15px;
-}
-
-.smallbtn{
-background:#020617;
-padding:10px;
-border-radius:10px;
-cursor:pointer;
-}
 </style>
 </head>
 
 <body>
 
-<div class="offline" id="offline">Internet ýok</div>
-
 <div class="header">TMCELL TÖLEG</div>
 
-<div class="topbuttons">
-<div>
-<span class="smallbtn" onclick="setLang('tk')">🇹🇲</span>
-<span class="smallbtn" onclick="setLang('tr')">🇹🇷</span>
-</div>
-
-<div class="smallbtn" onclick="toggleMode()">🌙</div>
-</div>
-
-<!-- TOP INFO -->
+<!-- IBAN CARD -->
 <div class="topcard" onclick="copyInfo()">
 <div class="name" id="name">AMAN HAYITMURADOV</div>
 <div class="iban" id="iban">TR91 0015 7000 0000 0201 1511 63</div>
@@ -161,19 +112,23 @@ cursor:pointer;
 
 <!-- MENU -->
 <div class="grid" id="menu">
-<div class="menu" onclick="openForm()">📶 Wi-Fi</div>
-<div class="menu">📱 TMCell</div>
-<div class="menu">📺 Älem TV</div>
-<div class="menu">🎬 Belet Film</div>
-<div class="menu">☎ Öý Telefon</div>
+<div class="menu" onclick="openService('wifi')">Wi-Fi</div>
+<div class="menu" onclick="openService('tmcell')">TMCell</div>
+<div class="menu" onclick="openService('alem')">Älem TV</div>
+<div class="menu" onclick="openService('belet')">Belet Film</div>
+<div class="menu" onclick="openService('home')">Öý Telefon</div>
 </div>
 
-<!-- WIFI FORM -->
-<div class="form" id="wifiForm">
+<!-- FORM -->
+<div class="form" id="formArea">
 
 <select id="welayat" onchange="loadEtrap()">
-<option>Welaýat saýla</option>
-<option value="halac">Lebap</option>
+<option value="">Welaýat saýla</option>
+<option value="ahal">Ahal</option>
+<option value="balkan">Balkan</option>
+<option value="dashoguz">Daşoguz</option>
+<option value="lebap">Lebap</option>
+<option value="mary">Mary</option>
 </select>
 
 <select id="etrap">
@@ -181,10 +136,13 @@ cursor:pointer;
 </select>
 
 <input placeholder="Kod" id="kod">
-
 <input placeholder="Näçe manat" id="manat">
 
 <button class="btn" onclick="sendWhats()">Dekont iber</button>
+
+<button class="btn" onclick="goHome()" style="margin-top:10px;background:#334155">
+Yza gaýt
+</button>
 
 </div>
 
@@ -192,45 +150,67 @@ cursor:pointer;
 
 <script>
 
-/* COPY */
+/* IBAN COPY (ÜÝTGEDILMEDI) */
 function copyInfo(){
 let text=
-document.getElementById("name").innerText+
-"\n"+
+document.getElementById("name").innerText+"\n"+
 document.getElementById("iban").innerText;
 
 navigator.clipboard.writeText(text);
 showToast();
 }
 
-/* TOAST */
 function showToast(){
 let t=document.getElementById("toast");
 t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-/* OPEN FORM */
-function openForm(){
+/* SERVICE OPEN */
+let activeService="wifi";
+
+function openService(s){
+activeService=s;
 document.getElementById("menu").style.display="none";
-document.getElementById("wifiForm").style.display="block";
+document.getElementById("formArea").style.display="block";
 }
 
-/* LOAD ETRAP */
+/* BACK HOME */
+function goHome(){
+document.getElementById("menu").style.display="grid";
+document.getElementById("formArea").style.display="none";
+}
+
+/* ETRAP DATA */
+const data={
+ahal:["Änew 322","Gökdepe 323","Kaka 324"],
+balkan:["Türkmenbaşy 422","Balkanabat 423"],
+dashoguz:["Daşoguz 522","Görogly 523"],
+lebap:["Türkmenabat 441","Halaç 442","Saýat 443"],
+mary:["Mary 622","Baýramaly 623"]
+};
+
 function loadEtrap(){
+let w=document.getElementById("welayat").value;
 let e=document.getElementById("etrap");
-e.innerHTML="";
 
-let opt=new Option("Halaç (441)","441");
+e.innerHTML="<option>Etrap saýla</option>";
+
+if(data[w]){
+data[w].forEach(x=>{
+let opt=new Option(x,x.split(" ")[1]);
 e.add(opt);
+});
+}
 }
 
-/* WHATSAPP */
+/* WHATSAPP SEND */
 function sendWhats(){
 let kod=document.getElementById("kod").value;
 let manat=document.getElementById("manat").value;
 
 let msg=
+"Hyzmat: "+activeService+"\n"+
 "Ady: AMAN HAYITMURADOV\n"+
 "Kod: "+kod+"\n"+
 "Manat: "+manat;
@@ -238,35 +218,6 @@ let msg=
 window.open(
 "https://wa.me/99364041065?text="+encodeURIComponent(msg)
 );
-}
-
-/* INTERNET CHECK */
-setInterval(()=>{
-if(!navigator.onLine){
-document.getElementById("offline").style.display="flex";
-}else{
-document.getElementById("offline").style.display="none";
-}
-},1000);
-
-/* LANGUAGE */
-function setLang(l){
-if(l=="tr"){
-document.querySelector(".header").innerText="TMCELL ÖDEME";
-}else{
-document.querySelector(".header").innerText="TMCELL TÖLEG";
-}
-}
-
-/* MODE */
-function toggleMode(){
-if(document.body.style.background=="white"){
-document.body.style.background="#0f172a";
-document.body.style.color="white";
-}else{
-document.body.style.background="white";
-document.body.style.color="black";
-}
 }
 
 </script>
