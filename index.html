@@ -29,7 +29,7 @@
         #splash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--dark-green); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 10000; transition: 0.6s;
+            align-items: center; justify-content: center; z-index: 10000;
         }
 
         /* HEADER */
@@ -39,8 +39,8 @@
         .lang-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
         .lang-btn.active { background: var(--gold); color: #000; }
 
-        /* MAIN PAGE CONTENT */
-        .main-page { max-width: 500px; margin: auto; padding: 15px; transition: 0.3s; }
+        /* MAIN PAGE */
+        .main-page { max-width: 500px; margin: auto; padding: 15px; }
         .bank-card {
             background: linear-gradient(135deg, var(--primary) 0%, var(--dark-green) 100%);
             padding: 25px; border-radius: 20px; color: white; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
@@ -56,7 +56,7 @@
         .menu-item i { font-size: 26px; color: var(--primary); margin-bottom: 8px; }
         .menu-item span { display: block; font-size: 11px; font-weight: 700; }
 
-        /* PAYMENT PAGE (FULL SCREEN) */
+        /* PAYMENT PAGE */
         #payment-page {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg); z-index: 2000; padding: 20px; overflow-y: auto;
@@ -78,6 +78,16 @@
             display: flex; align-items: center; justify-content: center; gap: 10px;
         }
 
+        /* CUSTOM ALERT (No Gmail visible) */
+        #custom-alert {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--card-bg); color: var(--text); padding: 25px; border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.3); z-index: 12000; text-align: center; width: 80%; max-width: 350px;
+        }
+        .alert-btn { background: var(--primary); color: white; border: none; padding: 10px 30px; border-radius: 10px; margin-top: 15px; cursor: pointer; font-weight: bold; }
+
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 11000; }
+
         .spinner { display: none; width: 22px; height: 22px; border: 3px solid white; border-top: 3px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
@@ -87,7 +97,13 @@
 <body onload="initApp()">
 
 <div id="splash">
-    <div style="font-size: 40px; font-weight: 900; color: var(--gold); animation: pulse 1.5s infinite;">AMAN PAY ⚡</div>
+    <div style="font-size: 40px; font-weight: 900; color: var(--gold); letter-spacing: 2px;">AMAN PAY ⚡</div>
+</div>
+
+<div id="overlay"></div>
+<div id="custom-alert">
+    <p id="alert-msg" style="font-weight: 600;"></p>
+    <button class="alert-btn" onclick="closeAlert()">OK</button>
 </div>
 
 <header class="header">
@@ -115,7 +131,7 @@
         <div class="menu-item" onclick="openPayment('Wi-Fi', 'id')"><i class="fas fa-wifi"></i><span>Wi-Fi</span></div>
         <div class="menu-item" onclick="openPayment('Älem TV', 'id')"><i class="fas fa-tv"></i><span>Älem TV</span></div>
         <div class="menu-item" onclick="openPayment('Belet Film', 'id')"><i class="fas fa-film"></i><span>Belet Film</span></div>
-        <div class="menu-item" onclick="openPayment('Öý Telefony', 'tel')"><i class="fas fa-phone-alt"></i><span>Öý Tel</span></div>
+        <div class="menu-item" onclick="openPayment('Öý Telefony', 'id')"><i class="fas fa-phone-alt"></i><span>Öý Tel</span></div>
         <div class="menu-item" onclick="location.reload()"><i class="fas fa-sync-alt"></i><span>Täzele</span></div>
     </div>
 </div>
@@ -144,11 +160,23 @@
 
 <script>
     let currentService = "";
+    let alertText = "Maglumatlary ýazyň!";
 
     function initApp() {
         setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 2000);
-        // Telefonuň "Back" düwmesini diňlemek
         window.onpopstate = function() { goBack(true); };
+    }
+
+    // Professional Alert (No Gmail)
+    function showAlert(msg) {
+        document.getElementById('alert-msg').innerText = msg;
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('custom-alert').style.display = 'block';
+    }
+
+    function closeAlert() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('custom-alert').style.display = 'none';
     }
 
     function openPayment(name, type) {
@@ -158,13 +186,12 @@
         document.getElementById('service-title').innerText = name;
         
         const holder = document.getElementById('input-holder');
-        if(type === 'tel') {
+        // DIŇE ALTYN ASYRDA +993 BAR, GALANY BOŞ
+        if(name === 'Altyn Asyr') {
             holder.innerHTML = `<span class="prefix">+993</span><input type="tel" class="tel-input" id="client-id" maxlength="8" placeholder="6x xxxxxx">`;
         } else {
-            holder.innerHTML = `<input type="text" id="client-id" placeholder="ID belgiňiz">`;
+            holder.innerHTML = `<input type="text" id="client-id" placeholder="...">`;
         }
-
-        // History-ä täze ýagdaý goşmak (Back düwmesi üçin)
         history.pushState({page: 'payment'}, "Payment");
     }
 
@@ -177,20 +204,26 @@
     function finalizePayment() {
         const id = document.getElementById('client-id').value;
         const amt = document.getElementById('pay-amount').value;
-        if(!id || !amt) return alert("Maglumatlary ýazyň!");
+        
+        if(!id || !amt) {
+            showAlert(alertText);
+            return;
+        }
 
         const btn = document.getElementById('btn-pay-text');
         const spinner = document.getElementById('pay-spinner');
+        const originalText = btn.innerText;
         btn.innerText = "...";
         spinner.style.display = "block";
 
         setTimeout(() => {
-            const pref = document.getElementById('client-id').classList.contains('tel-input') ? "+993" : "ID: ";
+            const isAltyn = currentService === 'Altyn Asyr';
+            const pref = isAltyn ? "+993" : "";
             const msg = `Salam Aman, töleg etdim.%0A%0AHyzmat: ${currentService}%0A${pref}${id}%0AMöçberi: ${amt} TMT%0ADekondy ugradýaryn.`;
             window.open(`https://wa.me/99364041065?text=${msg}`);
-            btn.innerText = document.getElementById('btn-pay-text').getAttribute('data-origin') || "DEKONDYŇYZY UGRADYŇ";
+            btn.innerText = originalText;
             spinner.style.display = "none";
-        }, 1500);
+        }, 1200);
     }
 
     function toggleMode() {
@@ -205,10 +238,10 @@
     }
 
     const langMap = {
-        tk: { id: "ID / Belgi", amt: "Möçberi (TMT)", btn: "DEKONDYŇYZY UGRADYŇ", back: "Yza" },
-        tr: { id: "ID / Numara", amt: "Miktar (TMT)", btn: "DEKONTU GÖNDER", back: "Geri" },
-        en: { id: "ID / Number", amt: "Amount (TMT)", btn: "SEND RECEIPT", back: "Back" },
-        ru: { id: "ID / Номер", amt: "Сумма (TMT)", btn: "ОТПРАВИТЬ ЧЕК", back: "Назад" }
+        tk: { id: "ID / Belgi", amt: "Möçberi (TMT)", btn: "DEKONDYŇYZY UGRADYŇ", back: "Yza", alert: "Haýyş, maglumatlary dolduryň!" },
+        tr: { id: "ID / Numara", amt: "Miktar (TMT)", btn: "DEKONTU GÖNDER", back: "Geri", alert: "Lütfen bilgileri doldurun!" },
+        en: { id: "ID / Number", amt: "Amount (TMT)", btn: "SEND RECEIPT", back: "Back", alert: "Please fill in the details!" },
+        ru: { id: "ID / Номер", amt: "Сумма (TMT)", btn: "ОТПРАВИТЬ ЧЕК", back: "Назад", alert: "Пожалуйста, заполните данные!" }
     };
 
     function setLang(l, b) {
@@ -217,8 +250,8 @@
         document.getElementById('lbl-id').innerText = langMap[l].id;
         document.getElementById('lbl-amount').innerText = langMap[l].amt;
         document.getElementById('btn-pay-text').innerText = langMap[l].btn;
-        document.getElementById('btn-pay-text').setAttribute('data-origin', langMap[l].btn);
         document.getElementById('back-text').innerText = langMap[l].back;
+        alertText = langMap[l].alert;
         document.getElementById('toast').innerText = l === 'tk' ? "Göçürildi! ✅" : "Copied! ✅";
     }
 </script>
