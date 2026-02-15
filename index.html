@@ -1,272 +1,172 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="tk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TizTole</title>
+<title>Tmcell Töleg</title>
 
 <style>
 body{
 margin:0;
-font-family:Segoe UI,Arial;
-background:#eef2f6;
+font-family:Arial;
+background:#0f172a;
+color:white;
 }
 
-.screen{display:none;min-height:100vh;}
-.active{display:block;}
-
-/* LOGIN */
-.login{
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.pin{
-display:flex;
-gap:10px;
-margin-top:20px;
-}
-
-.pin input{
-width:50px;
-height:50px;
-text-align:center;
-font-size:22px;
-border-radius:12px;
-border:1px solid #ccc;
-}
-
-/* HEADER */
 .header{
+background:linear-gradient(45deg,#ff003c,#ff4d6d);
 padding:20px;
+text-align:center;
 font-size:24px;
-font-weight:700;
-}
-
-/* GRID */
-.grid{
-padding:20px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
+font-weight:bold;
 }
 
 .card{
-height:90px;
-border-radius:20px;
-background:linear-gradient(135deg,#4facfe,#00f2fe);
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-weight:600;
-font-size:20px;
-box-shadow:0 10px 20px rgba(0,0,0,.2);
+background:#1e293b;
+margin:15px;
+padding:15px;
+border-radius:15px;
+text-align:center;
 }
 
-/* FORM */
-.form{padding:20px;}
-
-.input{
-width:100%;
-padding:15px;
-margin-top:10px;
-border-radius:12px;
-border:1px solid #ccc;
+.iban{
 font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.name{
+opacity:0.8;
+margin-top:5px;
+}
+
+.menu{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px;
+padding:15px;
+}
+
+.menu button{
+background:#1e293b;
+border:none;
+color:white;
+padding:20px;
+border-radius:15px;
+font-size:16px;
+cursor:pointer;
+}
+
+.menu button:hover{
+background:#334155;
 }
 
 .paybtn{
-width:100%;
-padding:16px;
-margin-top:20px;
+background:#ff003c;
 border:none;
+padding:15px;
+width:90%;
+margin:20px auto;
+display:block;
 border-radius:15px;
-background:#00a651;
+font-size:18px;
 color:white;
-font-size:20px;
-font-weight:700;
+cursor:pointer;
 }
 
-/* LOADER */
-.loader{
-text-align:center;
-padding-top:150px;
-font-size:22px;
-}
-
-/* SUCCESS */
-.success{
-text-align:center;
-padding-top:120px;
-font-size:24px;
-font-weight:700;
-color:#00a651;
-}
-
-/* HISTORY */
-.hist{padding:20px;}
-.hitem{
+.lang{
+position:absolute;
+right:10px;
+top:10px;
 background:white;
-padding:12px;
-border-radius:12px;
-margin-top:10px;
-}
-
-/* NAV */
-.nav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:white;
-display:flex;
-justify-content:space-around;
-padding:12px;
-box-shadow:0 -5px 15px rgba(0,0,0,.1);
-}
-.nav button{
-background:none;
+color:black;
 border:none;
-font-size:22px;
+padding:5px 10px;
+border-radius:10px;
+cursor:pointer;
+}
+
+.offline{
+display:none;
+background:red;
+text-align:center;
+padding:10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="login" class="screen active">
-<div class="login">
-<h2>TizTole</h2>
-<p>Введите PIN</p>
-
-<div class="pin">
-<input maxlength="1">
-<input maxlength="1">
-<input maxlength="1">
-<input maxlength="1">
+<div class="offline" id="offlineText">
+Internet ýok
 </div>
 
-<button class="paybtn" onclick="enterApp()">Войти</button>
-</div>
-</div>
+<button class="lang" onclick="changeLang()">TR</button>
 
-<!-- HOME -->
-<div id="home" class="screen">
-<div class="header">TizTole</div>
-
-<div style="padding:0 20px">
-<h2>Добро пожаловать</h2>
+<div class="header">
+📱 TMCELL TÖLEG
 </div>
 
-<div class="grid">
-<div class="card" onclick="openPay('TMCell')">TM CELL</div>
-<div class="card" onclick="openPay('Internet')">Internet</div>
-<div class="card" onclick="openPay('WiFi')">WiFi</div>
-<div class="card" onclick="openPay('AŞTU')">AŞTU</div>
+<div class="card">
+<div class="iban" onclick="copyIBAN()">
+TR91 0015 7000 0000 0201 1511 63
+</div>
+<div class="name">
+AMAN HAYITMURADOV
 </div>
 </div>
 
-<!-- PAYMENT -->
-<div id="pay" class="screen">
-<div class="header" id="serviceName">Service</div>
-
-<div class="form">
-<input class="input" id="phone" placeholder="Телефон">
-<input class="input" id="amount" placeholder="Сумма">
-<button class="paybtn" onclick="processPay()">Оплатить</button>
-</div>
+<div class="menu">
+<button>📶 Tmcell</button>
+<button>📡 WiFi</button>
+<button>📺 Alem TV</button>
+<button>🎬 Belet Film</button>
+<button>☎ Öý Telefon</button>
 </div>
 
-<!-- LOADING -->
-<div id="loading" class="screen">
-<div class="loader">
-⏳ Обработка платежа...
-</div>
-</div>
-
-<!-- SUCCESS -->
-<div id="success" class="screen">
-<div class="success">
-✅ Оплата выполнена
-<br><br>
-<button class="paybtn" onclick="goHome()">На главную</button>
-</div>
-</div>
-
-<!-- HISTORY -->
-<div id="history" class="screen">
-<div class="header">История</div>
-<div class="hist" id="histList"></div>
-</div>
-
-<!-- NAV -->
-<div class="nav">
-<button onclick="goHome()">🏠</button>
-<button onclick="showHistory()">🕒</button>
-<button onclick="alert('Profile demo')">👤</button>
-</div>
+<button class="paybtn" onclick="payNow()">
+Töleg Et
+</button>
 
 <script>
+let lang="tk";
 
-function show(id){
-document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+function changeLang(){
+if(lang==="tk"){
+lang="tr";
+document.querySelector(".paybtn").innerText="Ödeme Yap";
+document.getElementById("offlineText").innerText="İnternet yok";
+}else{
+lang="tk";
+document.querySelector(".paybtn").innerText="Töleg Et";
+document.getElementById("offlineText").innerText="Internet ýok";
+}
 }
 
-function enterApp(){
-show("home");
+function copyIBAN(){
+navigator.clipboard.writeText("TR91 0015 7000 0000 0201 1511 63");
+alert("IBAN kopyalandy");
 }
 
-function openPay(name){
-serviceName.innerText=name;
-show("pay");
+function payNow(){
+let code="DK"+Math.floor(Math.random()*1000000);
+
+let text="Töleg edildi. Dekont kod: "+code;
+
+let url="https://wa.me/99364041065?text="+encodeURIComponent(text);
+
+window.open(url,"_blank");
 }
 
-function processPay(){
-let p=phone.value;
-let a=amount.value;
-
-if(!p || !a){
-alert("Введите данные");
-return;
+function checkInternet(){
+if(!navigator.onLine){
+document.getElementById("offlineText").style.display="block";
+}else{
+document.getElementById("offlineText").style.display="none";
+}
 }
 
-show("loading");
-
-setTimeout(()=>{
-saveHistory(p+" → "+a);
-show("success");
-},1500);
-}
-
-function saveHistory(t){
-let arr=JSON.parse(localStorage.getItem("hist")||"[]");
-arr.unshift(t);
-localStorage.setItem("hist",JSON.stringify(arr));
-}
-
-function showHistory(){
-show("history");
-loadHistory();
-}
-
-function loadHistory(){
-let arr=JSON.parse(localStorage.getItem("hist")||"[]");
-histList.innerHTML="";
-arr.forEach(x=>{
-histList.innerHTML+=`<div class="hitem">${x}</div>`;
-});
-}
-
-function goHome(){
-show("home");
-}
-
+setInterval(checkInternet,1000);
 </script>
 
 </body>
