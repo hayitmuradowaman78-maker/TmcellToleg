@@ -1,107 +1,215 @@
 <!DOCTYPE html>
 <html lang="tk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiz Töle ⚡</title>
-    <style>
-        :root { 
-            --bg-gradient: linear-gradient(135deg, #138808 0%, #1a5e12 100%); 
-            --card: rgba(255, 255, 255, 0.98); 
-            --text: #000000; 
-            --asyr-blue: #002752; 
-            --main-gold: #ffc107; 
-            --accent: #28a745; 
-            --shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .night-mode { 
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            --card: #1e293b; 
-            --text: #ffffff; 
-            --asyr-blue: #38bdf8;
-        }
-        
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-gradient); background-attachment: fixed; color: var(--text); margin: 0; min-height: 100vh; transition: 0.3s; overflow-x: hidden; }
-        .container { max-width: 420px; margin: auto; padding: 15px; }
-        
-        #offline-overlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #ffffff; z-index: 1000000; flex-direction: column; align-items: center; 
-            justify-content: center; text-align: center; color: #000;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiz Töleg</title>
 
-        .header-bar { background: rgba(0, 39, 82, 0.95); color: white; padding: 22px; text-align: center; font-weight: 900; font-size: 28px; border-radius: 0 0 25px 25px; box-shadow: var(--shadow); }
-        .time-box { display: flex; justify-content: space-between; background: rgba(0, 0, 0, 0.85); color: var(--main-gold); padding: 12px 18px; border-radius: 15px; margin: 15px 0; font-weight: 900; border: 1px solid var(--main-gold); }
-        
-        .lang-bar { display: flex; gap: 4px; justify-content: flex-end; }
-        .lang-btn { cursor: pointer; border: 2px solid #ddd; padding: 8px; border-radius: 10px; background: var(--card); font-size: 13px; font-weight: 900; color: #000; }
-        .active-lang { background: var(--asyr-blue); color: white !important; }
-        
-        .profile-card { background: var(--card); padding: 25px; border-radius: 25px; text-align: center; margin-bottom: 20px; box-shadow: var(--shadow); border: 3px solid var(--asyr-blue); }
-        .profile-card h2 { margin: 0; font-weight: 900; font-size: 24px; }
+<style>
+:root{
+--main:#0a7f2e;
+--bg:linear-gradient(135deg,#0a7f2e,#063f17);
+--card:white;
+--text:black;
+}
 
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .menu-item { background: var(--card); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.1); }
-        .menu-item b { font-size: 22px; font-weight: 900; display: block; margin-top: 10px; }
+.night{
+--bg:linear-gradient(135deg,#0f172a,#020617);
+--card:#1e293b;
+--text:white;
+}
 
-        .card { background: var(--card); border-radius: 25px; display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .card-header { background: var(--asyr-blue); color: white; padding: 20px; text-align: center; font-weight: 900; font-size: 24px; border-radius: 25px 25px 0 0; }
-        
-        .card-body { padding: 20px; }
-        select, input { width: 100%; padding: 18px; margin-bottom: 15px; border: 3px solid #cbd5e1; border-radius: 15px; font-size: 20px; font-weight: 900; box-sizing: border-box; background: white; color: black; }
+body{
+margin:0;
+font-family:Arial;
+background:var(--bg);
+color:var(--text);
+transition:.3s;
+}
 
-        .pay-btn { width: 100%; padding: 22px; background: var(--accent); color: white; border: none; border-radius: 18px; font-size: 24px; font-weight: 900; cursor: pointer; }
+.container{
+max-width:420px;
+margin:30px auto;
+padding:15px;
+}
 
-        .action-btn { border:none; background:var(--card); border-radius:12px; width:42px; height:42px; cursor:pointer; font-size:20px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow); border: 1px solid var(--asyr-blue); }
+.card{
+background:var(--card);
+padding:25px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
 
-        #history-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--card); z-index: 20000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .history-item { background: #f8fafc; border: 2px solid #e2e8f0; padding: 15px; border-radius: 15px; margin-bottom: 10px; color: black; }
+h1{text-align:center;margin-top:0}
 
-        #modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:10000; backdrop-filter: blur(5px); }
-        #error-modal { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:30px; border-radius:30px; z-index:11000; width:85%; text-align:center; color: black; }
-    </style>
+input,select{
+width:100%;
+padding:15px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ccc;
+font-size:18px;
+}
+
+button{
+width:100%;
+padding:15px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+background:var(--main);
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.topbar{
+display:flex;
+gap:8px;
+margin-bottom:10px;
+}
+
+.smallbtn{
+flex:1;
+padding:10px;
+font-size:14px;
+}
+
+.history{
+margin-top:20px;
+max-height:200px;
+overflow:auto;
+}
+
+.item{
+background:#eee;
+padding:10px;
+border-radius:8px;
+margin-top:8px;
+color:black;
+}
+
+.result{
+margin-top:10px;
+font-weight:bold;
+text-align:center;
+}
+</style>
 </head>
-<body onload="startApp()">
 
-    <div id="offline-overlay">
-        <div style="font-size: 80px;">⚠️</div>
-        <h1 id="off-title" style="font-weight: 900; color: #d32f2f;">INTERNET KESILDI!</h1>
-        <button id="off-btn" onclick="location.reload()" style="padding:18px 40px; background:#002752; color:white; border:none; border-radius:15px; font-weight: 900; font-size: 20px;">TÄZEDEN BARLA</button>
-    </div>
+<body>
 
-    <div id="history-panel">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 id="hist-title" style="font-weight: 900; color: var(--asyr-blue);">Töleg Taryhy</h2>
-            <button onclick="closeHistory()" style="background:red; color:white; border:none; padding:10px 15px; border-radius:10px; font-weight:900;">X</button>
-        </div>
-        <div id="history-list"></div>
-    </div>
+<div class="container">
 
-    <div id="modal-overlay" onclick="closeModal()"></div>
-    <div id="error-modal">
-        <div style="font-size: 50px;">⚠️</div>
-        <div id="error-text" style="font-weight: 900; margin: 20px 0; font-size: 20px;">Duýduryş!</div>
-        <button onclick="closeModal()" id="modal-ok" style="padding:15px; background:var(--asyr-blue); color:white; border:none; border-radius:15px; width: 100%; font-weight: 900; font-size: 18px;">Bolýar</button>
-    </div>
+<div class="topbar">
+<button class="smallbtn" onclick="toggleNight()">🌙</button>
+<button class="smallbtn" onclick="changeLang('tk')">TM</button>
+<button class="smallbtn" onclick="changeLang('ru')">RU</button>
+<button class="smallbtn" onclick="changeLang('en')">EN</button>
+<button class="smallbtn" onclick="changeLang('tr')">TR</button>
+</div>
 
-    <div class="header-bar" id="main-title">Tiz töle ⚡</div>
+<div class="card">
 
-    <div class="container">
-        <div class="time-box">
-            <span id="date-now">--.--.----</span>
-            <span id="time-now">00:00:00</span>
-        </div>
+<h1 id="title">TMCell Töleg</h1>
 
-        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 15px;">
-            <button class="action-btn" onclick="document.body.classList.toggle('night-mode')">🌗</button>
-            <button class="action-btn" onclick="showHistory()">🕒</button>
-            <div class="lang-bar" style="flex-grow:1;">
-                <button class="lang-btn active-lang" id="btn-tk" onclick="applyLang('tk')">🇹🇲 TM</button>
-                <button class="lang-btn" id="btn-tr" onclick="applyLang('tr')">🇹🇷 TR</button>
-                <button class="lang-btn" id="btn-ru" onclick="applyLang('ru')">🇷🇺 RU</button>
-                <button class="lang-btn" id="btn-en" onclick="applyLang('en')">🇺🇸 EN</button>
-            </div>
-        </div>
+<label id="lphone">Telefon belgisi</label>
+<input id="phone" placeholder="65XXXXXX">
 
-        <div class="profile-card">
-          
+<label id="lamount">Mukdar</label>
+<input id="amount" type="number" placeholder="10">
+
+<button onclick="pay()" id="paybtn">Töleg et</button>
+
+<div class="result" id="result"></div>
+
+<div class="history" id="history"></div>
+
+</div>
+</div>
+
+<script>
+
+let LANG={
+tk:{
+title:"TMCell Töleg",
+phone:"Telefon belgisi",
+amount:"Mukdar",
+pay:"Töleg et",
+fill:"Maglumatlary doldur!"
+},
+ru:{
+title:"Оплата TMCell",
+phone:"Телефон",
+amount:"Сумма",
+pay:"Оплатить",
+fill:"Заполните данные!"
+},
+en:{
+title:"TMCell Payment",
+phone:"Phone number",
+amount:"Amount",
+pay:"Pay",
+fill:"Fill fields!"
+},
+tr:{
+title:"TMCell Ödeme",
+phone:"Telefon",
+amount:"Miktar",
+pay:"Öde",
+fill:"Bilgileri doldur!"
+}
+};
+
+let currentLang="tk";
+
+function changeLang(l){
+currentLang=l;
+let t=LANG[l];
+title.innerText=t.title;
+lphone.innerText=t.phone;
+lamount.innerText=t.amount;
+paybtn.innerText=t.pay;
+}
+
+function toggleNight(){
+document.body.classList.toggle("night");
+}
+
+function pay(){
+let phone=document.getElementById("phone").value;
+let amount=document.getElementById("amount").value;
+
+if(!phone || !amount){
+result.innerText=LANG[currentLang].fill;
+return;
+}
+
+let text=phone+" → "+amount+" TMT";
+result.innerText=text;
+
+saveHistory(text);
+loadHistory();
+}
+
+function saveHistory(t){
+let arr=JSON.parse(localStorage.getItem("hist")||"[]");
+arr.unshift(t);
+localStorage.setItem("hist",JSON.stringify(arr));
+}
+
+function loadHistory(){
+let arr=JSON.parse(localStorage.getItem("hist")||"[]");
+history.innerHTML="";
+arr.slice(0,10).forEach(x=>{
+history.innerHTML+=`<div class="item">${x}</div>`;
+});
+}
+
+loadHistory();
+
+</script>
+
+</body>
+</html>
